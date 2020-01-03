@@ -98,6 +98,7 @@ def evaluatePred(y_test, y_pred, optimal_cutoff):
     '''
     y_pred = y_pred[:,0]
 # TODO: be careful that false positive and false negative might be inversed on the powerpoint (similar resuls)
+#     optimal cutoff is only optimised for logistic regression ?
     print('The default cutoff')
     y_pred_cutoff_05 = np.where(y_pred > 0.5, 0, 1)
     KPI(y_test, y_pred_cutoff_05)
@@ -203,7 +204,7 @@ def compare_algorithms(X_train, y_train, X_test, y_test, optimal_cutoff):
 
     ##model: SVM
     print('SVM')
-    model_SVM = SVC(kernel='linear').fit(X_train, y_train)
+    model_SVM = SVC(kernel='linear', probability=True).fit(X_train, y_train)
     y_pred_SVM = model_SVM.predict_proba(X_test)
     evaluatePred(y_test, y_pred_SVM, optimal_cutoff)
     f_importances_abs(np.array(model_SVM.coef_[0]), X_test.columns)
@@ -426,7 +427,7 @@ Diff_Embeddings_balanced_provinceEmb_pk = [["balanced all features", X_train_pro
 Diff_Embeddings_imbalanced_provinceEmb_pk = [["imbalanced all features", X_train_provinceEmb_imbalanced_allFeatures, X_test_provinceEmb_allFeatures, 0.5954308], ["imbalanced random forest", X_train_provinceEmb_imbalanced_RandomForest_pk, X_test_provinceEmb_RandomForest_pk, 0.5], ["imbalanced boruta", X_train_provinceEmb_imbalanced_Boruta_pk, X_test_provinceEmb_Boruta_pk, 0.5]]
 Diff_Embeddings_provinceEmb_pk = [[Diff_Embeddings_balanced_provinceEmb_pk, y_train_pk_balanced], [Diff_Embeddings_imbalanced_provinceEmb_pk, y_train_pk_imbalanced]]
 
-Diff_Embeddings_pk = [Diff_Embeddings_TopLocCust_pk, Diff_Embeddings_TopLocEmb_pk, Diff_Embeddings_provinceEmb_pk]
+Diff_Embeddings_pk = [Diff_Embeddings_TopLocCust_pk]#, Diff_Embeddings_TopLocEmb_pk, Diff_Embeddings_provinceEmb_pk
 
 
 # construct the balanced and imbalanced combinaisons for TopLocCust, for DZ
